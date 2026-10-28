@@ -1,0 +1,79 @@
+{
+  "version": 2,
+  "connections": [
+    {
+      "id": "codex",
+      "name": "Codex 订阅",
+      "provider": "openai",
+      "kind": "subscription-cli",
+      "api": "openai-completions",
+      "baseUrl": "",
+      "model": "",
+      "apiKeyEnv": "CUSTOM_API_KEY",
+      "adapter": "codex",
+      "binary": "codex",
+      "transport": "https",
+      "timeoutMs": 300000,
+      "enabled": true,
+      "reasoning": false,
+      "contextWindow": 128000,
+      "maxTokens": 8192
+    },
+    {
+      "id": "kimi",
+      "name": "Kimi",
+      "provider": "kimi",
+      "kind": "api",
+      "api": "openai-completions",
+      "baseUrl": "https://api.moonshot.cn/v1",
+      "model": "",
+      "apiKeyEnv": "MOONSHOT_API_KEY",
+      "adapter": "codex",
+      "binary": "",
+      "transport": "https",
+      "timeoutMs": 300000,
+      "enabled": true,
+      "reasoning": false,
+      "contextWindow": 128000,
+      "maxTokens": 8192
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "provider": "deepseek",
+      "kind": "api",
+      "api": "openai-completions",
+      "baseUrl": "https://api.deepseek.com/v1",
+      "model": "",
+      "apiKeyEnv": "DEEPSEEK_API_KEY",
+      "adapter": "codex",
+      "binary": "",
+      "transport": "https",
+      "timeoutMs": 300000,
+      "enabled": true,
+      "reasoning": false,
+      "contextWindow": 128000,
+      "maxTokens": 8192
+    }
+  ],
+  "workflow": {
+    "planner": "codex",
+    "reviewer": "codex",
+    "riskReviewer": "codex",
+    "defaultWorker": "kimi",
+    "workerPool": [
+      "kimi",
+      "deepseek"
+    ],
+    "assignmentMode": "auto",
+    "rules": [],
+    "allowFallback": true
+  },
+  "policy": {
+    "concurrency": 2,
+    "maxRevisions": 2,
+    "maxWorkerTurns": 20,
+    "maxRunInputTokens": 200000,
+    "maxRunOutputTokens": 50000
+  }
+}
