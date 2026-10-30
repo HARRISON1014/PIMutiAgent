@@ -84,7 +84,7 @@ test('manually pinned execution never silently switches to a fallback model',asy
 
 test('audit revisions preserve user-selected executors',async t=>{
   let audits=0;const calls=[];
-  const f=await fixture(t,{supervisor:async()=>++audits===1?{verdict:'revise',summary:'Fix',questions:[],revisions:[{taskId:'a',instructions:'Improve',worker:'deepseek'}]}:pass,worker:async({worker})=>{calls.push(worker.id);return 'Delivered';}});
+  const f=await fixture(t,{supervisor:async()=>++audits===1?{verdict:'revise',summary:'Fix',questions:[],revisions:[{taskId:'a',instructions:'Improve',issueKey:'missing-behavior',evidence:'Mock task result is incomplete',rationale:'Acceptance requires a complete deliverable',worker:'deepseek'}]}:pass,worker:async({worker})=>{calls.push(worker.id);return 'Delivered';}});
   const run=await f.runner.create({prompt:'Build',projectPath:f.project,workflow:{assignmentMode:'manual'},manualTasks:[task('a','codex')]});
   assert.equal((await finish(f,run.id)).status,'completed');assert.deepEqual(calls,['codex','codex']);
 });

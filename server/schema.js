@@ -39,7 +39,7 @@ export function normalizeConfig(value) {
 }
 export const taskSchema = z.object({ id: z.string().regex(/^[a-z][a-z0-9-]{0,39}$/), title: z.string().min(1).max(160), instructions: z.string().min(1).max(12000), worker: z.string().min(1), dependsOn: z.array(z.string()).max(20), acceptance: z.array(z.string().min(1)).min(1).max(12) });
 export const planSchema = z.object({ summary: z.string().min(1).max(12000), questions: z.array(z.string().min(1).max(2000)).max(8), tasks: z.array(taskSchema).min(1).max(16) });
-export const auditSchema = z.object({ verdict: z.enum(['pass', 'revise', 'ask']), summary: z.string().min(1).max(16000), questions: z.array(z.string().min(1).max(2000)).max(8), revisions: z.array(z.object({ taskId: z.string(), instructions: z.string().min(1).max(12000) })).max(16) });
+export const auditSchema = z.object({ verdict: z.enum(['pass', 'revise', 'ask']), summary: z.string().min(1).max(16000), questions: z.array(z.string().min(1).max(2000)).max(8), revisions: z.array(z.object({ taskId: z.string(), instructions: z.string().min(1).max(12000), issueKey:z.string().trim().min(1).max(160), evidence:z.string().trim().min(1).max(4000), rationale:z.string().trim().min(1).max(4000) })).max(16) });
 export const riskSchema = z.object({ decision: z.enum(['ask', 'deny']), reason: z.string().min(1).max(4000) });
 export function validatePlan(value, workers) {
   const plan = planSchema.parse(value), ids = new Set(plan.tasks.map(t => t.id));

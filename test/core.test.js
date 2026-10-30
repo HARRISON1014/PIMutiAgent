@@ -66,7 +66,7 @@ test('file tools reject traversal, private files, alternate streams and junction
 test('parallel DAG waits for dependencies; audit revision invalidates all downstream tasks', async t => {
   let active = 0, peak = 0, auditCalls = 0; const executions = [];
   const f = await fixture(t,{
-    supervisor: async ({schema}) => schema === planSchema ? plan([task('a'),task('b',[],'deepseek'),task('c',['a','b'])]) : ++auditCalls === 1 ? { verdict:'revise', summary:'Fix a', questions:[], revisions:[{taskId:'a',instructions:'Fix missing behavior'}] } : pass,
+    supervisor: async ({schema}) => schema === planSchema ? plan([task('a'),task('b',[],'deepseek'),task('c',['a','b'])]) : ++auditCalls === 1 ? { verdict:'revise', summary:'Fix a', questions:[], revisions:[{taskId:'a',instructions:'Fix missing behavior',issueKey:'missing-behavior',evidence:'Test fixture output lacks required behavior',rationale:'Required for the acceptance criterion'}] } : pass,
     worker: async ({task,run,workDir,artifact,onEvent}) => {
       active++; peak = Math.max(peak,active); executions.push(task.id);
       if (task.id === 'c') assert.ok(run.tasks.filter(t => ['a','b'].includes(t.id)).every(t => t.status === 'completed'));
